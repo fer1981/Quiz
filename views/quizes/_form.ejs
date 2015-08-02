@@ -1,8 +1,18 @@
 <label for="preg" class="rem">Pregunta:</label>
 <input type="text" id="preg" name="quiz[pregunta]" value="<%= quiz.pregunta %>"/> <p>
 <label for="resp" class="rem">Respuesta:</label>
-<input type="text" id="resp" name="quiz[respuesta]" value="<%= quiz.respuesta %>"/> <p>
-<!--<label for="image" class="rem">Imagen:</label>-->
-<!--<input type="file" accept="image/*" id="image" name="image"/><p>-->
+<input type="text" id="resp" name="quiz[respuesta]" value="<%= quiz.respuesta%>"/> <p>
+
+<select name="quiz[tema]">
+<% var t = quiz.tema; %>
+<% var x; for (x=0; x < tm.length; x++) { %>
+<% if(tm[x] === quiz.tema) { %>
+<option value="<%= tm[x] %>" selected><%= tm[x] %></option>
+<% } else { %>
+<option value="<%= tm[x] %>" ><%= tm[x] %></option>
+<% } %>
+<% } %>
+</select> 
+
 <a href="/quizes"><button type="button">Cancelar</button></a>
 <input type="submit" value="Salvar">
