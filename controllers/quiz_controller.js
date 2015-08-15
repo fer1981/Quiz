@@ -42,14 +42,40 @@ quiz
   );
 };
 
-//GET /quizes
+//GET /quizes/search
 exports.index = function(req, res)
   {
-    models.Quiz.findAll().then(function(quizes){
-      res.render('quizes/index.ejs', {quizes: quizes, errors: []});
-    }
-  ).catch(function(error){next(error)});
+    if (req.query.search) {
+      var filtro = ('%' + req.query.search.trim() + '%').replace(/\s+/g,'%');
+
+      models.Quiz.findAll(
+        {where:["pregunta like ?", filtro],
+        order: 'pregunta ASC'
+        })
+        .then(function(quizes){
+          res.render('quizes/index.ejs', {quizes: quizes, errors: []});
+          }
+        ).catch(function(error){next(error)});
+
+      }else{
+
+        models.Quiz.findAll().then(function(quizes){
+        res.render('quizes/index.ejs', {quizes: quizes, errors: []});
+      }
+    ).catch(function(error){next(error)});
+
+  }
 };
+
+
+// //GET /quizes
+// exports.index = function(req, res)
+//   {
+//     models.Quiz.findAll().then(function(quizes){
+//       res.render('quizes/index.ejs', {quizes: quizes, errors: []});
+//     }
+//   ).catch(function(error){next(error)});
+// };
 
 
 // GET /quizes/:id
