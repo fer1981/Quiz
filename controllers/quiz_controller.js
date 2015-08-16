@@ -49,7 +49,7 @@ exports.index = function(req, res)
       var filtro = ('%' + req.query.search.trim() + '%').replace(/\s+/g,'%');
 
       models.Quiz.findAll(
-        {where:["pregunta like ?", filtro],
+        {where:["lower(pregunta) like ?", filtro.toLowerCase()],
         order: 'pregunta ASC'
         })
         .then(function(quizes){
