@@ -15,6 +15,7 @@ res.render('sessions/new', {errors: errors});
 };
 // POST /login -- Crear la sesion si usuario se autentica
 exports.create = function(req, res) {
+req.session.horaExpira = (new Date()).getTime() + 120000;
 var login = req.body.login;
 var password = req.body.password;
 var userController = require('./user_controller');

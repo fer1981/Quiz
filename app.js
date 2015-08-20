@@ -29,6 +29,20 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static(path.join(__dirname, 'views/test')));
 
+app.use(function(req, res, next){
+var tiempoMaxInactivo = 120000;
+if (req.session.user) { //Si se ha iniciado sesion comprobamos que no ha expirado
+if (req.session.horaExpira > (new Date()).getTime()) { // Si no ha expirado Actualizamos hora de expiracion
+req.session.horaExpira = (new Date()).getTime() + tiempoMaxInactivo;
+next();
+} else {
+req.session.destroy(); // Si la sesion ha expirado la cerramos
+}
+} else {
+next(); // Si no había sesión iniciada no hacemos nada
+}
+});
+
 
 // Helpers dinamicos:
 app.use(function(req, res, next) {
@@ -79,6 +93,5 @@ app.use(function(err, req, res, next) {
         errors: []
     });
 });
-
 
 module.exports = app;
